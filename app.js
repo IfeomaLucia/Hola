@@ -34,7 +34,8 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 mongoose.Promise = global.Promise;
-mongoose.connect('mongodb://localhost:27017/Hola', { useNewUrlParser: true });
+//mongoose.connect('mongodb://localhost:27017/Hola', { useNewUrlParser: true });
+mongoose.connect('mongodb://lucia:Neilifeoma1@ds263832.mlab.com:63832/hola', { useNewUrlParser: true });
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
