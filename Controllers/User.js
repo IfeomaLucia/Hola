@@ -37,12 +37,12 @@ exports.getUsers = function(req, res){
             if(err){
                 res.status(500).json({Err: err, message: 'Error occured'})
             } else if (users.length == 0){
-                res.status(200).json({message: 'No user exists'})
+                res.status(200).json({message: 'User list is empty'})
             }else {
                 res.status(200).json(users)
             }
         })
-        .select('-__v')  
+        .select('-__v -password')  
     } catch (exception) {
         console.log('Server error ->' + exception)
     }
@@ -67,4 +67,15 @@ exports.loginUser = function(req, res){
     } catch (exception) {
         console.log('Server error -> ' + exception)
     }
+}
+
+exports.deleteUser = function(req, res){
+    var id = {_id: req.params.id};
+    User.remove(id, (err) => {
+        if(err){
+            res.status(500).json({Err: err, message: 'Error occured'});
+        }else{
+            res.status(200).json({message: 'User deleted successfully'})
+        }
+    })
 }
