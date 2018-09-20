@@ -27,7 +27,7 @@ exports.addUser = function(req, res){
             }
         })
     } catch (exception) {
-        console.log('Server error -> ' + exception)
+        console.log('Server error -> ' + exception);
     }
 }
 
