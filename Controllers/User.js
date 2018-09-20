@@ -7,8 +7,7 @@ exports.addUser = function(req, res){
         email: req.body.email,
         password: req.body.password,
         gender: req.body.gender,
-        DOB: req.body.DOB,
-        status: req.body.status
+        DOB: req.body.DOB
     }
     try {
         User.findOne({$or: [{username: data.username}, {email: data.email}]}, function(err, user){
@@ -28,7 +27,7 @@ exports.addUser = function(req, res){
             }
         })
     } catch (exception) {
-        console.log('Error: ' + exception)
+        console.log('Server error -> ' + exception)
     }
 }
 
@@ -45,6 +44,27 @@ exports.getUsers = function(req, res){
         })
         .select('-__v')  
     } catch (exception) {
-        console.log('Error: ' + exception)
+        console.log('Server error ->' + exception)
+    }
+}
+
+exports.loginUser = function(req, res){
+    try {
+        User.findOne({email: req.body.email}, (err, user) =>{
+            if(err){
+                res.status(500).json({Err: err, message: 'Couldn\'t find the user with given mail'})
+            } else if(user == null){
+                res.status(401).json({message: 'User does not exist'});
+            } else {
+                var validPassword = bcrypt.compareSync(req.body.password, user.password);
+                if(user && validPassword){
+                    res.status(200).json({userId: user._id, message:'Login successful'})
+                }else{
+                    res.json({message: 'Email/password incorrect'})
+                }
+            }
+        }) 
+    } catch (exception) {
+        console.log('Server error -> ' + exception)
     }
 }
